@@ -1,1 +1,1 @@
-# Learn My SQL
+# Learn MySQL
