@@ -39,21 +39,21 @@ ALTER TABLE products
 SELECT id, name, quantity FROM products WHERE quantity = 30;
 SELECT * FROM products WHERE price = 20000;
 
--- Add column category
+-- Add column table field category
 ALTER TABLE products
   ADD COLUMN category ENUM('Makanan', 'Minuman', 'Lain-lain')
     AFTER name;
 
--- update one column
+-- update one column data table
 UPDATE products SET category = 'Makanan' WHERE id = 'P0001';
 UPDATE products SET category = 'Minuman' WHERE id = 'P0003';
 UPDATE products SET category = 'Makanan' WHERE name = 'Ayam Goreng';
 UPDATE products SET category = 'Makanan' WHERE price = 18000;
 
--- Update more column
+-- Update more column data table
 UPDATE products SET category = 'Makanan', description = 'Nasi Lemak No. 1' WHERE id = 'P0004';
 
--- Update value column
+-- Update value column data table
 UPDATE products SET price = price + 5000 WHERE id = 'P0004';
 
 -- Delete data table
