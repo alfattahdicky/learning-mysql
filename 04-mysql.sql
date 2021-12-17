@@ -19,3 +19,37 @@ INSERT INTO admin(first_name, last_name) VALUES('Farraz', 'Jasrial');
 SELECT LAST_INSERT_ID(); 
 
 SELECT * FROM admin ORDER BY id ;
+
+-- String Function 
+SELECT id, LOWER(first_name) AS 'Name Lower', 
+UPPER(first_name) AS 'Name Uppder', 
+LENGTH(first_name) AS 'Name Length'
+FROM admin; 
+
+-- Date Time Function(ex: EXTRACT/YEAR/MONTH)
+SELECT id, created_at, 
+  EXTRACT(YEAR FROM created_at) AS 'Year', 
+  EXTRACT(MONTH FROM created_at) AS 'Month'
+FROM products;
+
+SELECT id, created_at, YEAR(created_at) AS 'Year', MONTH(created_at) AS 'Month' FROM products;
+
+-- Flow Control Function with CASE (similary switch case)
+SELECT id, 
+  CASE category 
+    WHEN 'Makanan' THEN 'Enak'
+    WHEN 'Minuman' THEN 'Segar'
+    ELSE 'Apa Itu?'
+  END
+  AS 'Category'
+FROM products;
+
+-- Flow Control IF(condition, value, value)
+SELECT id, price,
+  IF(price <= 20000, 'Murah', 
+    IF(price >= 25000, 'Mahal', 'Apa itu mahal')
+  ) AS 'Murah?'
+FROM products;
+
+-- Flow control IFNULL(change value)
+SELECT id, name , IFNULL(description,'Kosong') FROM products;
