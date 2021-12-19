@@ -53,3 +53,26 @@ FROM products;
 
 -- Flow control IFNULL(change value)
 SELECT id, name , IFNULL(description,'Kosong') FROM products;
+
+-- Aggregate Function ex: look price most expensive in table products, 
+-- Note: cannot join aggregation usual without GROUP BY ex: (COUNT(id),name)\
+SELECT COUNT(id) AS 'Count Id' FROM products;
+SELECT AVG(price) AS 'Average Price products' FROM products;
+SELECT MAX(price) AS 'Max price products' FROM products;
+SELECT MIN(price) AS 'Min price products' FROM products;
+SELECT SUM(quantity) AS  'Sum Stock' FROM products;
+
+-- GROUP BY Clause with Aggreagate function use to Total product by category 
+SELECT category, COUNT(id) AS 'Total Product'
+FROM products GROUP BY category;
+SELECT MAX(price) AS 'Max price products', category 
+FROM products GROUP BY category;
+SELECT MIN(price) AS 'Min price products', category 
+FROM products GROUP BY category;
+SELECT AVG(price) AS 'Average price products', category 
+FROM products GROUP BY category;
+SELECT SUM(quantity) AS 'Sum Stock', category FROM products GROUP BY category;
+
+-- Filter data have grouping With HAVING clause (not use where)
+SELECT category, COUNT(id) AS total
+FROM products GROUP BY category HAVING total > 3;
