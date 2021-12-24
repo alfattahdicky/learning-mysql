@@ -116,3 +116,97 @@ INSERT INTO wallet(id_customer) VALUES (1), (3);
 
 SELECT wl.balance, c.email
 FROM wallet AS wl JOIN customers AS c ON (wl.id_customer = c.id);
+
+-- One to Many Relationship
+
+-- Create table categories
+CREATE TABLE categories(
+  id VARCHAR(10) NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  PRIMARY KEY(id)
+)ENGINE = InnoDB;  
+
+-- Delete column category and create column id_category then 
+-- make foreign key id_category references to categories id
+ALTER TABLE products
+  DROP COLUMN category;
+
+ALTER TABLE products
+  ADD COLUMN id_category VARCHAR(10);
+
+ALTER TABLE products
+  ADD CONSTRAINT fk_products_category
+    FOREIGN KEY (id_category) REFERENCES categories(id);
+
+SELECT * FROM products;
+
+-- Insert id, name for categories
+INSERT INTO categories(id,name) 
+VALUES ('C0001','Makanan'),
+       ('C0002', 'Minuman'),
+       ('C0003', 'Lain-lain'); 
+
+SELECT * FROM categories;
+
+-- update products on id_category use id categories
+UPDATE products SET id_category = 'C0001'
+WHERE id IN ('P0001', 'P0002', 'P0004', 'P0005', 'P0006');
+
+UPDATE products SET id_category = 'C0002'
+WHERE id IN ('P0003');
+
+-- Join table products and categories to show 
+SELECT products.id, products.name, categories.name
+FROM products
+JOIN categories ON (categories.id = products.id_category); 
+
+-- Many to many Relationship
+/*
+  Solving create table relationship between table have many to many
+*/
+-- Create table order
+CREATE TABLE orders
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  total INT NOT NULL,
+  order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(id)
+)ENGINE = InnoDB;
+
+-- Create Table order detail bridge order and products
+
+CREATE TABLE orders_detail
+(
+  id_product VARCHAR(10) NOT NULL,
+  id_order INT NOT NULL,
+  price INT NOT NULL,
+  quantity INT NOT NULL,
+  PRIMARY KEY (id_product, id_order)
+)ENGINE = InnoDB;
+
+-- Add foreign key to orders_detail for product(id) and orders(id)
+ALTER TABLE orders_detail
+  ADD CONSTRAINT fk_orders_detail_product
+    FOREIGN KEY (id_product) REFERENCES products (id);
+
+ALTER TABLE orders_detail
+  ADD CONSTRAINT fk_orders_detail_order
+    FOREIGN KEY (id_order) REFERENCES orders (id);
+
+DESC orders_detail;
+
+-- Insert data to order and orders_detail
+INSERT INTO orders(total) VALUES(50000);
+
+INSERT INTO orders_detail(id_product, id_order, price, quantity)
+VALUES ('P0001', 1, 25000, 1),
+        ('P0002', 1, 25000, 1);
+INSERT INTO orders_detail(id_product, id_order, price, quantity)
+VALUES ('P0003', 2, 25000, 1),
+        ('P0004', 2, 25000, 1);
+
+SELECT * FROM orders_detail; 
+
+SELECT orders.id, products.id, products.name, orders_detail.quantity, orders_detail.price FROM orders
+JOIN orders_detail ON (orders_detail.id_order = orders.id)
+JOIN products ON (products.id = orders_detail.id_product);
